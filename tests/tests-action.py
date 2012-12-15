@@ -539,7 +539,6 @@ class StripVlanAction(DataLayerSourceAction):
         action_list = []
 
         act = action.action_strip_vlan()
-	act.vlan_vid=2
         action_list.append(act)
         
 	flow_mod19 = testutils.genFloModFromPkt(self, pkt, ing_port=0, action_list=action_list)
@@ -561,7 +560,6 @@ class StripVlanError(DataLayerSourceAction):
         action_list = []
 
         act = action.action_strip_vlan()
-        act.vlan_vid=2
         action_list.append(act)
 
         flow_mod20 = testutils.genFloModFromPkt(self, pkt, ing_port=0, action_list=action_list)
