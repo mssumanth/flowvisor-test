@@ -531,11 +531,13 @@ class StripVlanAction(DataLayerSourceAction):
     """
     def runTest(self):
 	rule =  ["changeFlowSpace", "ADD", "35000", "all", "dl_src=00:01:00:00:00:02,dl_dst=00:00:00:00:00:10,dl_vlan=200", "Slice:controller0=4"]
+	#rule =  ["changeFlowSpace", "ADD", "35000", "all", "dl_src=00:01:00:00:00:02,dl_dst=00:00:00:00:00:10", "Slice:controller0=4"]
+	#rule =  ["changeFlowSpace", "ADD", "35000", "all", "dl_src=00:06:07:08:09:0a,dl_dst=00:01:02:03:04:05,dl_vlan=200", "Slice:controller0=4"]
         (success, data) = testutils.setRule(self, self.sv, rule)
         self.assertTrue(success, "%s: Not success" %(self.__class__.__name__))
 
         pkt = testutils.simplePacket(dl_src="00:01:00:00:00:02", dl_dst="00:00:00:00:00:10", dl_vlan=200,dl_vlan_pcp=7)
-
+	#pkt = testutils.simplePacket(dl_src="00:06:07:08:09:0a", dl_dst="00:01:02:03:04:05", dl_vlan=200)
         action_list = []
 
         act = action.action_strip_vlan()
