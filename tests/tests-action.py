@@ -53,7 +53,7 @@ def test_set_init(config):
 
 class DataLayerSourceAction(templatetest.TemplateTest):
     """
-        Send Flow_mod message to change the dl_src 
+        Send Flow_mod message to change the dl_src
         and see if the dl_src to which it is changed is in the expected slice!
     """
     def setUp(self):
@@ -66,14 +66,14 @@ class DataLayerSourceAction(templatetest.TemplateTest):
 
     def runTest(self):
         # Prepare a flow_mod using a simple pkt for controller0
-	pkt = testutils.simplePacket(dl_src="00:01:00:00:00:02", dl_dst="00:00:00:00:00:10", dl_type=testutils.ETHERTYPE_ARP, nw_proto=testutils.ARP_REPLY)
+        pkt = testutils.simplePacket(dl_src="00:01:00:00:00:02", dl_dst="00:00:00:00:00:10", dl_type=testutils.ETHERTYPE_ARP, nw_proto=testutils.ARP_REPLY)
 
-	action_list = []
-	act = action.action_set_dl_src()
-	act.dl_addr=[0,1,0,0,0,2]
+        action_list = []
+        act = action.action_set_dl_src()
+        act.dl_addr=[0,1,0,0,0,2]
 
-	action_list.append(act)
-	flow_mod1 = testutils.genFloModFromPkt(self, pkt, ing_port=0, action_list=action_list)
+        action_list.append(act)
+        flow_mod1 = testutils.genFloModFromPkt(self, pkt, ing_port=0, action_list=action_list)
 
         # Now send those two commands and verify them
         snd_list = ["controller", 0, 0, flow_mod1]
@@ -83,11 +83,11 @@ class DataLayerSourceAction(templatetest.TemplateTest):
 
 class DataLayerSourceError(DataLayerSourceAction):
     """
-        Send Flow_mod message to change the dl_src 
+        Send Flow_mod message to change the dl_src
         and see if the dl_src to which it is changed is in the expected slice!
     """
     def runTest(self):
-        #Add a rule to the fv config 
+        #Add a rule to the fv config
         rule =  ["changeFlowSpace", "ADD", "33000", "all", "in_port=0,dl_src=00:00:00:00:00:02", "Slice:controller0=4"]
         (success, data) = testutils.setRule(self, self.sv, rule)
         self.assertTrue(success, "%s: Not success" %(self.__class__.__name__))
@@ -114,11 +114,11 @@ class DataLayerSourceError(DataLayerSourceAction):
 
 class DataLayerDestinationAction(DataLayerSourceAction):
     """
-        Send Flow_mod message to change the dl_dst 
+        Send Flow_mod message to change the dl_dst
         and see if the dl_dst to which it is changed is in the expected slice!
     """
     def runTest(self):
-        #Add a dl_dst rule to the fv config 
+        #Add a dl_dst rule to the fv config
         rule =  ["changeFlowSpace", "ADD", "33000", "all", "in_port=0,dl_dst=00:00:00:00:00:02", "Slice:controller0=4"]
         (success, data) = testutils.setRule(self, self.sv, rule)
         self.assertTrue(success, "%s: Not success" %(self.__class__.__name__))
@@ -140,7 +140,7 @@ class DataLayerDestinationAction(DataLayerSourceAction):
 
 class DataLayerDestinationError(DataLayerSourceAction):
     """
-        Send Flow_mod message to change the dl_dst 
+        Send Flow_mod message to change the dl_dst
         and see if the dl_dst to which it is changed is in the expected slice!
     """
     def runTest(self):
@@ -166,10 +166,10 @@ class DataLayerDestinationError(DataLayerSourceAction):
 
 class NetLayerSourceAction(DataLayerSourceAction):
     """
-        Send Flow_mod message to change the nw_src 
+        Send Flow_mod message to change the nw_src
     """
     def runTest(self):
-        #Add a nw_src rule to the fv config 
+        #Add a nw_src rule to the fv config
         rule =  ["changeFlowSpace", "ADD", "35000", "all", "in_port=0,nw_src=192.168.0.5", "Slice:controller0=4"]
         (success, data) = testutils.setRule(self, self.sv, rule)
         self.assertTrue(success, "%s: Not success" %(self.__class__.__name__))
@@ -192,7 +192,7 @@ class NetLayerSourceAction(DataLayerSourceAction):
 
 class NetLayerSourceError(DataLayerSourceAction):
     """
-        Send Flow_mod message to change the nw_src 
+        Send Flow_mod message to change the nw_src
     """
     def runTest(self):
         pkt = testutils.simplePacket(nw_src="192.168.0.5")
@@ -218,10 +218,10 @@ class NetLayerSourceError(DataLayerSourceAction):
 
 class NetLayerDestinationAction(DataLayerSourceAction):
     """
-        Send Flow_mod message to change the nw_dst 
+        Send Flow_mod message to change the nw_dst
     """
     def runTest(self):
-        #Add a nw_dst rule to the fv config 
+        #Add a nw_dst rule to the fv config
         rule =  ["changeFlowSpace", "ADD", "35000", "all", "in_port=0,nw_dst=192.168.0.5", "Slice:controller0=4"]
         (success, data) = testutils.setRule(self, self.sv, rule)
         self.assertTrue(success, "%s: Not success" %(self.__class__.__name__))
@@ -325,7 +325,7 @@ class NetLayerTOSError(DataLayerSourceAction):
 
 class TransportLayerSourceAction(DataLayerSourceAction):
     """
-        Send Flow_mod message to change the tp_src 
+        Send Flow_mod message to change the tp_src
     """
     def runTest(self):
         rule =  ["changeFlowSpace", "ADD", "35000", "all", "tp_src=1020", "Slice:controller0=4"]
@@ -352,7 +352,7 @@ class TransportLayerSourceAction(DataLayerSourceAction):
 
 class TransportLayerSourceError(DataLayerSourceAction):
     """
-        Send Flow_mod message to change the tp_src 
+        Send Flow_mod message to change the tp_src
     """
     def runTest(self):
 
@@ -405,7 +405,7 @@ class TransportLayerDestinationAction(DataLayerSourceAction):
 
 class TransportLayerDestinationError(DataLayerSourceAction):
     """
-        Send Flow_mod message to change the tp_dst 
+        Send Flow_mod message to change the tp_dst
     """
     def runTest(self):
         pkt = testutils.simplePacket(tp_src=80)
@@ -428,7 +428,7 @@ class TransportLayerDestinationError(DataLayerSourceAction):
 
 class VlanIdAction(DataLayerSourceAction):
     """
-        Send Flow_mod message to change the dl_vlan 
+        Send Flow_mod message to change the dl_vlan
     """
     def runTest(self):
         rule =  ["changeFlowSpace", "ADD", "35000", "all", "dl_vlan=1080", "Slice:controller0=4"]
@@ -479,7 +479,7 @@ class VlanIdError(DataLayerSourceAction):
 
 class VlanPrioAction(DataLayerSourceAction):
     """
-        Send Flow_mod message to change the nw_src 
+        Send Flow_mod message to change the nw_src
     """
     def runTest(self):
         rule =  ["changeFlowSpace", "ADD", "35000", "all", "dl_src=00:01:00:00:00:02,dl_dst=00:00:00:00:00:10,dl_vlan=0x438,dl_vpcp=7", "Slice:controller0=4"]
@@ -503,7 +503,7 @@ class VlanPrioAction(DataLayerSourceAction):
 
 class VlanPrioError(DataLayerSourceAction):
     """
-        Send Flow_mod message to change the nw_src 
+        Send Flow_mod message to change the nw_src
     """
     def runTest(self):
         pkt = testutils.simplePacket(dl_src="10:01:00:00:00:02", dl_dst="00:00:00:00:00:10", dl_vlan=180, dl_vlan_pcp=7)
@@ -527,23 +527,23 @@ class VlanPrioError(DataLayerSourceAction):
 
 class StripVlanAction(DataLayerSourceAction):
     """
-        Send Flow_mod message to change the nw_src 
+        Send Flow_mod message to change the nw_src
     """
     def runTest(self):
-	rule =  ["changeFlowSpace", "ADD", "35000", "all", "dl_src=00:01:00:00:00:02,dl_dst=00:00:00:00:00:10,dl_vlan=200", "Slice:controller0=4"]
-	#rule =  ["changeFlowSpace", "ADD", "35000", "all", "dl_src=00:01:00:00:00:02,dl_dst=00:00:00:00:00:10", "Slice:controller0=4"]
-	#rule =  ["changeFlowSpace", "ADD", "35000", "all", "dl_src=00:06:07:08:09:0a,dl_dst=00:01:02:03:04:05,dl_vlan=200", "Slice:controller0=4"]
+        rule =  ["changeFlowSpace", "ADD", "35000", "all", "dl_src=00:01:00:00:00:02,dl_dst=00:00:00:00:00:10,dl_vlan=200", "Slice:controller0=4"]
+        #rule =  ["changeFlowSpace", "ADD", "35000", "all", "dl_src=00:01:00:00:00:02,dl_dst=00:00:00:00:00:10", "Slice:controller0=4"]
+        #rule =  ["changeFlowSpace", "ADD", "35000", "all", "dl_src=00:06:07:08:09:0a,dl_dst=00:01:02:03:04:05,dl_vlan=200", "Slice:controller0=4"]
         (success, data) = testutils.setRule(self, self.sv, rule)
         self.assertTrue(success, "%s: Not success" %(self.__class__.__name__))
 
         pkt = testutils.simplePacket(dl_src="00:01:00:00:00:02", dl_dst="00:00:00:00:00:10", dl_vlan=200,dl_vlan_pcp=7)
-	#pkt = testutils.simplePacket(dl_src="00:06:07:08:09:0a", dl_dst="00:01:02:03:04:05", dl_vlan=200)
+        #pkt = testutils.simplePacket(dl_src="00:06:07:08:09:0a", dl_dst="00:01:02:03:04:05", dl_vlan=200)
         action_list = []
 
         act = action.action_strip_vlan()
         action_list.append(act)
-        
-	flow_mod19 = testutils.genFloModFromPkt(self, pkt, ing_port=0, action_list=action_list)
+
+        flow_mod19 = testutils.genFloModFromPkt(self, pkt, ing_port=0, action_list=action_list)
 
         # Now send those two commands and verify them
         snd_list = ["controller", 0, 0, flow_mod19]
@@ -554,7 +554,7 @@ class StripVlanAction(DataLayerSourceAction):
 
 class StripVlanError(DataLayerSourceAction):
     """
-        Send Flow_mod message to change the nw_src 
+        Send Flow_mod message to change the nw_src
     """
     def runTest(self):
         pkt = testutils.simplePacket(dl_src="10:01:00:00:00:02", dl_dst="00:00:00:00:00:10", dl_vlan=200,dl_vlan_pcp=7)
@@ -565,8 +565,8 @@ class StripVlanError(DataLayerSourceAction):
         action_list.append(act)
 
         flow_mod20 = testutils.genFloModFromPkt(self, pkt, ing_port=0, action_list=action_list)
-        
-	err_msg = error.bad_action_error_msg()
+
+        err_msg = error.bad_action_error_msg()
         err_msg.code = ofp.OFPBAC_BAD_ARGUMENT
         err_msg.data = flow_mod20.pack()
 
@@ -578,19 +578,256 @@ class StripVlanError(DataLayerSourceAction):
         self.assertTrue(res, "%s: FlowMod20: Received unexpected message" %(self.__class__.__name__))
 
 
+class FVInPortAction(DataLayerSourceAction):
+    """
+        Send Flow_mod message to change the action output
+    """
+    def runTest(self):
+        """
+        Creating a rule with port number equal to the OFPP_IN_PORT port
+        """
+        rule =  ["changeFlowSpace", "ADD", "35000", "all", "in_port=0,dl_src=00:01:00:00:00:02,dl_dst=00:00:00:00:00:10", "Slice:controller0=4"]
+
+        (success, data) = testutils.setRule(self, self.sv, rule)
+        self.assertTrue(success, "%s: Not success" %(self.__class__.__name__))
+
+        pkt = testutils.simplePacket(dl_src="00:01:00:00:00:02", dl_dst="00:00:00:00:00:10")
+
+        action_list = []
+
+        act = action.action_output()
+        act.port = ofp.OFPP_IN_PORT
+        action_list.append(act)
+
+        flow_mod21 = testutils.genFloModFromPkt(self, pkt, ing_port=0, action_list=action_list)
+
+        # Now send those two commands and verify them
+        snd_list = ["controller", 0, 0, flow_mod21]
+        exp_list = [["switch", 0, flow_mod21]]
+        res = testutils.ofmsgSndCmp(self, snd_list, exp_list, xid_ignore=True)
+        self.assertTrue(res, "%s: FlowMod21: Received unexpected message" %(self.__class__.__name__))
+
+
+class FVAllPortAction(DataLayerSourceAction):
+    """
+        Send Flow_mod message to change the action output
+    """
+    def runTest(self):
+        """
+        Creating a rule such that it matches the action_output with the OFPP_ALL port.
+        """
+        rule =  ["changeFlowSpace", "ADD", "35000", "all", "dl_src=00:01:00:00:00:02,dl_dst=00:00:00:00:00:10", "Slice:controller0=4"]
+
+        (success, data) = testutils.setRule(self, self.sv, rule)
+        self.assertTrue(success, "%s: Not success" %(self.__class__.__name__))
+
+        pkt = testutils.simplePacket(dl_src="00:01:00:00:00:02", dl_dst="00:00:00:00:00:10")
+
+        action_list = []
+
+        act = action.action_output()
+        act.port = ofp.OFPP_ALL
+        action_list.append(act)
+
+        flow_mod22 = testutils.genFloModFromPkt(self, pkt, ing_port=0, action_list=action_list)
+
+        # Now send those two commands and verify them
+        snd_list = ["controller", 0, 0, flow_mod22]
+        exp_list = [["switch", 0, flow_mod22]]
+        res = testutils.ofmsgSndCmp(self, snd_list, exp_list, xid_ignore=True)
+        self.assertTrue(res, "%s: FlowMod22: Received unexpected message" %(self.__class__.__name__))
 
 
 
+class FVTablePortAction(DataLayerSourceAction):
+    """
+        Send Flow_mod message to change the action output
+    """
+    def runTest(self):
+        """
+        Creating a rule such that it matches the action_output with the OFPP_TABLE port.
+        """
+        rule =  ["changeFlowSpace", "ADD", "35000", "all", "dl_src=00:01:00:00:00:02,dl_dst=00:00:00:00:00:10", "Slice:controller0=4"]
+
+        (success, data) = testutils.setRule(self, self.sv, rule)
+        self.assertTrue(success, "%s: Not success" %(self.__class__.__name__))
+
+        pkt = testutils.simplePacket(dl_src="00:01:00:00:00:02", dl_dst="00:00:00:00:00:10")
+
+        action_list = []
+
+        act = action.action_output()
+        act.port = ofp.OFPP_TABLE
+        action_list.append(act)
+
+        flow_mod23 = testutils.genFloModFromPkt(self, pkt, ing_port=0, action_list=action_list)
+
+        # Now send those two commands and verify them
+        snd_list = ["controller", 0, 0, flow_mod23]
+        exp_list = [["switch", 0, flow_mod23]]
+        res = testutils.ofmsgSndCmp(self, snd_list, exp_list, xid_ignore=True)
+        self.assertTrue(res, "%s: FlowMod23: Received unexpected message" %(self.__class__.__name__))
 
 
+class FVControllerPortAction(DataLayerSourceAction):
+    """
+        Send Flow_mod message to change the action output
+    """
+    def runTest(self):
+        """
+        Creating a rule such that it matches the action_output with the OFPP_CONTROLLER port.
+        """
+        rule =  ["changeFlowSpace", "ADD", "35000", "all", "dl_src=00:01:00:00:00:02,dl_dst=00:00:00:00:00:10", "Slice:controller0=4"]
+
+        (success, data) = testutils.setRule(self, self.sv, rule)
+        self.assertTrue(success, "%s: Not success" %(self.__class__.__name__))
+
+        pkt = testutils.simplePacket(dl_src="00:01:00:00:00:02", dl_dst="00:00:00:00:00:10")
+
+        action_list = []
+
+        act = action.action_output()
+        act.port = ofp.OFPP_CONTROLLER
+        action_list.append(act)
+
+        flow_mod24 = testutils.genFloModFromPkt(self, pkt, ing_port=0, action_list=action_list)
+
+        # Now send those two commands and verify them
+        snd_list = ["controller", 0, 0, flow_mod24]
+        exp_list = [["switch", 0, flow_mod24]]
+        res = testutils.ofmsgSndCmp(self, snd_list, exp_list, xid_ignore=True)
+        self.assertTrue(res, "%s: FlowMod24: Received unexpected message" %(self.__class__.__name__))
 
 
+class FVLocalPortAction(DataLayerSourceAction):
+    """
+        Send Flow_mod message to change the action output
+    """
+    def runTest(self):
+        """
+        Creating a rule with port number equal to 65534 which is the decimal equivalent of the OFPP_LOCAL port.
+        """
+        rule =  ["changeFlowSpace", "ADD", "35000", "all", "in_port=65534,dl_src=00:01:00:00:00:02,dl_dst=00:00:00:00:00:10", "Slice:controller0=4"]
+
+        (success, data) = testutils.setRule(self, self.sv, rule)
+        self.assertTrue(success, "%s: Not success" %(self.__class__.__name__))
+
+        pkt = testutils.simplePacket(dl_src="00:01:00:00:00:02", dl_dst="00:00:00:00:00:10")
+
+        action_list = []
+
+        act = action.action_output()
+        act.port = ofp.OFPP_LOCAL
+        action_list.append(act)
+
+        flow_mod25 = testutils.genFloModFromPkt(self, pkt, ing_port=0, action_list=action_list)
+
+        # Now send those two commands and verify them
+        snd_list = ["controller", 0, 0, flow_mod25]
+        exp_list = [["switch", 0, flow_mod25]]
+        res = testutils.ofmsgSndCmp(self, snd_list, exp_list, xid_ignore=True)
+        self.assertTrue(res, "%s: FlowMod25: Received unexpected message" %(self.__class__.__name__))
+   
+ 
+class FVNormalPortAction(DataLayerSourceAction):
+    """
+        Send Flow_mod message to change the action output
+    """
+    def runTest(self):
+        """
+        Creating a rule with port number equal to 65530 which is the decimal equivalent of the OFPP_NORMAL port.
+        """
+        rule =  ["changeFlowSpace", "ADD", "35000", "all", "in_port=65530,dl_src=00:01:00:00:00:02,dl_dst=00:00:00:00:00:10", "Slice:controller0=4"]
+
+        (success, data) = testutils.setRule(self, self.sv, rule)
+        self.assertTrue(success, "%s: Not success" %(self.__class__.__name__))
+
+        pkt = testutils.simplePacket(dl_src="00:01:00:00:00:02", dl_dst="00:00:00:00:00:10")
+
+        action_list = []
+
+        act = action.action_output()
+        act.port = ofp.OFPP_NORMAL
+        action_list.append(act)
+
+        flow_mod26 = testutils.genFloModFromPkt(self, pkt, ing_port=0, action_list=action_list)
+
+        # Now send those two commands and verify them
+        snd_list = ["controller", 0, 0, flow_mod26]
+        exp_list = [["switch", 0, flow_mod26]]
+        res = testutils.ofmsgSndCmp(self, snd_list, exp_list, xid_ignore=True)
+        self.assertTrue(res, "%s: FlowMod26: Received unexpected message" %(self.__class__.__name__))
+    
+
+class FVNormalPortError(DataLayerSourceAction):
+    """
+        Send Flow_mod message to change the action output
+    """
+    def runTest(self):
+        """
+        Creating a rule with port number equal to 65531 which is not the decimal equivalent of the OFPP_NORMAL port.
+        """
+        rule =  ["changeFlowSpace", "ADD", "35000", "all", "in_port=65531,dl_src=00:01:00:00:00:02,dl_dst=00:00:00:00:00:10", "Slice:controller0=4"]
+
+        (success, data) = testutils.setRule(self, self.sv, rule)
+        self.assertTrue(success, "%s: Not success" %(self.__class__.__name__))
+
+        pkt = testutils.simplePacket(dl_src="00:01:00:00:00:02", dl_dst="00:00:00:00:00:10")
+
+        action_list = []
+
+        act = action.action_output()
+        act.port = ofp.OFPP_NORMAL
+        action_list.append(act)
+
+        flow_mod27 = testutils.genFloModFromPkt(self, pkt, ing_port=0, action_list=action_list)
 
 
+        err_msg = error.bad_action_error_msg()
+        err_msg.code = ofp.OFPBAC_BAD_OUT_PORT
+        err_msg.data = flow_mod27.pack()
+
+        # Now send those two commands and verify them
+        snd_list = ["controller", 0, 0, flow_mod27]
+        exp_list = [["controller", 0, err_msg]]
+        res = testutils.ofmsgSndCmp(self, snd_list, exp_list, xid_ignore=True, hdr_only=True)
+        self.assertTrue(res, "%s: FlowMod27: Received unexpected message" %(self.__class__.__name__))
+    
+
+class FVInPortError(DataLayerSourceAction):
+    """
+        Send Flow_mod message to change the action output
+    """
+    def runTest(self):
+        """
+        Creating a rule with port number not equal to the in port.
+        """
+        rule =  ["changeFlowSpace", "ADD", "35000", "all", "in_port=6,dl_src=00:01:00:00:00:02,dl_dst=00:00:00:00:00:10", "Slice:controller0=4"]
+
+        (success, data) = testutils.setRule(self, self.sv, rule)
+        self.assertTrue(success, "%s: Not success" %(self.__class__.__name__))
+
+        pkt = testutils.simplePacket(dl_src="00:01:00:00:00:02", dl_dst="00:00:00:00:00:10")
+
+        action_list = []
+
+        act = action.action_output()
+        act.port = ofp.OFPP_IN_PORT
+        action_list.append(act)
+
+        flow_mod28 = testutils.genFloModFromPkt(self, pkt, ing_port=9, action_list=action_list)
 
 
+        err_msg = error.bad_action_error_msg()
+        err_msg.code = ofp.OFPBAC_EPERM
+        err_msg.data = flow_mod28.pack()
 
-
+        # Now send those two commands and verify them
+        snd_list = ["controller", 0, 0, flow_mod28]
+        exp_list = [["controller", 0, err_msg]]
+        res = testutils.ofmsgSndCmp(self, snd_list, exp_list, xid_ignore=True, hdr_only=True)
+        self.assertTrue(res, "%s: FlowMod28: Received unexpected message" %(self.__class__.__name__))
+    
 
 
 
