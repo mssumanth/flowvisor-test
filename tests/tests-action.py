@@ -39,7 +39,7 @@ def test_set_init(config):
     global basic_config
 
     basic_fv_cmd = config["fv_cmd"]
-    basic_logger = logging.getLogger("flowdb")
+    basic_logger = logging.getLogger("action")
     basic_logger.info("Initializing test set")
     basic_timeout = config["timeout"]
     basic_port_map = config["port_map"]
