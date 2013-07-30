@@ -498,8 +498,8 @@ class AggStatsSpecific(AggStats):
     User request a specific aggregate flow entry(with a particular match) as stats 
     and receives them from FlowVisor.
     """
-     def runTest(self):
-         # Matching field values below are from original regression test case
+    def runTest(self):
+        # Matching field values below are from original regression test case
         fm1 = _genFlowModArp(self,wildcards=0x3ffffa,dl_src="00:00:00:00:00:02",out_ports=[2])
         fm2 = _genFlowModArp(self,wildcards=0x3ffffa,dl_src="00:01:00:00:00:02",out_ports=[2])
         fm3 = _genFlowModArp(self,wildcards=0x3ffffa,dl_src="00:00:00:00:00:01",out_ports=[3], in_port=1) 
