@@ -133,9 +133,8 @@ def _genAllFlowsStats():
 
 class FlowStats(templatetest.TemplateTest):
     """
-    FlowStats checking after deleting slices
-    It spawns flowvisor with two slices, spawns several switches,
-    deletes slices and check the number of remaining slices
+    On receiving the flowStatsReq, flowVisor sould send back the flowStatsReply
+    pertaining to that slice only.
     """
     def setUp(self):
         templatetest.TemplateTest.setUp(self)
@@ -204,9 +203,8 @@ class FlowStats(templatetest.TemplateTest):
 
 class FlowStatFragments(templatetest.TemplateTest):
     """
-    FlowStatFragments checking after deleting slices
-    It spawns flowvisor with two slices, spawns several switches,
-    deletes slices and check the number of remaining slices
+    When the switch sends the FlowStatsResponse in segments with the 'MORE_FLAG' set,
+    FV should collect all the response and send them.
     """
     def setUp(self):
         templatetest.TemplateTest.setUp(self)
@@ -316,7 +314,8 @@ class FlowStatFragments(templatetest.TemplateTest):
 	
 class FlowStatsSpecific(FlowStats):
     """
-    User request a specific flow entry as stats
+    User request a specific flow entry(with a particular match) as stats 
+    and receives them from FlowVisor.
     With and without outport
     """
 
@@ -422,8 +421,10 @@ class FlowStatsSpecific(FlowStats):
 
 
 class AggStats(FlowStats):
-
-
+    """
+    On receiving the AggStatsReq, flowVisor sould send back the AggStatsReply
+    pertaining to that slice only.
+    """
     def runTest(self):
          # Matching field values below are from original regression test case
         fm1 = _genFlowModArp(self,wildcards=0x3ffffa,dl_src="00:00:00:00:00:02",out_ports=[2])
@@ -493,7 +494,10 @@ class AggStats(FlowStats):
 
 
 class AggStatsSpecific(AggStats):
-
+    """
+    User request a specific aggregate flow entry(with a particular match) as stats 
+    and receives them from FlowVisor.
+    """
      def runTest(self):
          # Matching field values below are from original regression test case
         fm1 = _genFlowModArp(self,wildcards=0x3ffffa,dl_src="00:00:00:00:00:02",out_ports=[2])

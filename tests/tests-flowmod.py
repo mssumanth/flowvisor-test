@@ -68,9 +68,9 @@ def _genFlowModArp(parent, wildcards=0x3ffffa, dl_src = testutils.SRC_MAC_FOR_CT
 
 class ExpandNot(templatetest.TemplateTest):
     """
-    Flow_mod w/o tracking
-    Send flowmod messages and check flowdb status
-    Check if it is not updated since tracking is off in this test
+    Send a flowmod from the controller to the switch without wildcarding. 
+    Check if the appropriate switch receives the  flow mod without any expansion of the rules 
+    by flowvisor onto the switches.
     """
     def setUp(self):
         templatetest.TemplateTest.setUp(self)
@@ -100,9 +100,8 @@ class ExpandNot(templatetest.TemplateTest):
        
 class Expand(templatetest.TemplateTest):
     """
-    Flow_mod w/o tracking
-    Send flowmod messages and check flowdb status
-    Check if it is not updated since tracking is off in this test
+    Send a flowmod from the controller to the switch with the match field wildcarded.
+    The flowmod should get expanded and applied on the appropriate switches.
     """
     def setUp(self):
         templatetest.TemplateTest.setUp(self)
